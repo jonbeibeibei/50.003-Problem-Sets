@@ -7,8 +7,10 @@ class FactorThread{
 
   public static boolean finished = false;
   public static BigInteger[] result = new BigInteger[2];
+  public static Object lock = new Object();
 
   public static void main(String[] args){
+    FactorThread mainThread = new FactorThread();
     FactoringThread[] threads = new FactoringThread[NUM_THREADS];
 
     BigInteger numThreads = BigInteger.valueOf(NUM_THREADS);
@@ -21,25 +23,42 @@ class FactorThread{
       else
         lower = step.multiply(SEMIPRIME.divide(numThreads));
       BigInteger upper = (step.add(BigInteger.ONE)).multiply(SEMIPRIME.divide(numThreads));
-      threads[i] = new FactoringThread(lower, upper, SEMIPRIME);
+      threads[i] = mainThread.new FactoringThread(lower, upper, SEMIPRIME);
       threads[i].start();
     }
 
-    while(true){
-      if(finished){
-        System.out.format("Factors are %d and %d\n", result[0], result[1]);
-        for(int i = 0; i < NUM_THREADS; i++){
-          threads[i].interrupt();
-          System.out.println("thread " + i + " is interrupted? " + threads[i].isInterrupted());
-        }
-        break;
-      }
-    }
+    mainThread.checkFlag(threads);
+
 
 
   }
 
-  public static class FactoringThread extends Thread{
+  public void checkFlag(FactoringThread[] threads){
+    synchronized(lock){
+      while(!finished){
+        try{
+          lock.wait();
+        }catch(InterruptedException e){
+          e.printStackTrace();
+        }
+      }
+      System.out.format("Factors are %d and %d\n", result[0], result[1]);
+      for(int i = 0; i < NUM_THREADS; i++){
+        threads[i].interrupt();
+        System.out.println("thread " + i + " is interrupted? " + threads[i].isInterrupted());
+      }
+
+    }
+  }
+
+  public void setFlag(){
+    synchronized(lock){
+      finished = true;
+      lock.notify();
+    }
+  }
+
+  public class FactoringThread extends Thread{
 
     private BigInteger lower;
     private BigInteger upper;
@@ -60,7 +79,7 @@ class FactorThread{
         if(semiprime.mod(i) == BigInteger.ZERO){
           result[0] = i;
           result[1] = semiprime.divide(i);
-          finished = true;
+          setFlag();
         }
       }
     }

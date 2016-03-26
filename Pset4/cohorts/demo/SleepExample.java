@@ -25,12 +25,7 @@ class LeftThread extends Thread {
 			System.out.print(2);
 			System.out.print(3);
 
-			try {
-				Thread.sleep(SleepExample.sleepingTime*2);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+      Thread.yield();
 
 			System.out.println(5);
 		}
@@ -39,22 +34,13 @@ class LeftThread extends Thread {
 
 class RightThread extends Thread {
 	public void run() {
-		try {
-			Thread.sleep(SleepExample.sleepingTime);
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+    Thread.yield();
 
 		for (int i = 0; i <  SleepExample.rounds; i++) {
 			System.out.print(4);
 
-			try {
-				Thread.sleep(SleepExample.sleepingTime*2);
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+      Thread.yield();
+
 		}
 	}
 }

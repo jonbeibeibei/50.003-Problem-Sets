@@ -33,7 +33,8 @@ class FactorPrimeServerMul{
       }
     }
 
-    BigInteger num = new BigInteger("1127451830576035879");
+    BigInteger num = new BigInteger("4294967297");
+    //BigInteger num = new BigInteger("1127451830576035879");
     BigInteger numClients = BigInteger.valueOf(socketList.size());
     BigInteger step = num.divide(numClients);
 

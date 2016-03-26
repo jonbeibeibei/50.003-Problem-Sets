@@ -26,7 +26,12 @@ class A extends Thread{
 		}
 		catch (InterruptedException e){
 			System.out.println("InterruptedException caught");
-			//throw new RuntimeException("Thread interrupted...");
+			throw new RuntimeException("Thread interrupted...");
+      //what happens if this is thrown?
+      // the RuntimeException is not caught
+      // The threads don't share the stack in which
+      // exceptions are stored. So threads cannot
+      // communicate exceptions
 		}
 	}
 }
