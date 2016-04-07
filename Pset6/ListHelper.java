@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class ListHelper<E> {
 	public java.util.List<E> list = Collections.synchronizedList(new ArrayList<E>());
-		
+
 	//thread-safe
 	public boolean putIfAbsent(E x) {
 		synchronized (list) {
@@ -13,8 +13,8 @@ public class ListHelper<E> {
 			if (absent) {
 				list.add(x);
 			}
-			
-			return absent;			
+
+			return absent;
 		}
 	}
 }

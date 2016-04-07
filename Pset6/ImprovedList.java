@@ -8,19 +8,19 @@ import java.util.ListIterator;
 
 public class ImprovedList<E> {
 	private final List<E> list;
-		
+
 	public ImprovedList (List<E> list) {
 		this.list = list;
 	}
-	
+
 	public synchronized boolean putIfAbsent(E x) {
 		boolean contains = list.contains(x);
-		
+
 		if (!contains) {
 			list.add(x);
 		}
-		
-		return !contains; 
+
+		return !contains;
 	}
 
 	public synchronized boolean add(E e) {
@@ -30,7 +30,7 @@ public class ImprovedList<E> {
 
 	public synchronized void add(int index, E element) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public synchronized boolean addAll(Collection<? extends E> c) {
@@ -45,7 +45,7 @@ public class ImprovedList<E> {
 
 	public synchronized void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public synchronized boolean contains(Object o) {
